@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Np">
+	
+	<select id="selectNotePostSno" parameterType="CustomMap" resultType="String">
+		SELECT /* Np.selectNotePostSno */ NEXTVAL('DIARY.TB003_SEQ') AS NOTE_POST_SNO
+	</select>
+	
+	<insert id="insertNotePost">
+		INSERT INTO /* Np.insertNotePost */
+		    DIARY.TB003(
+		        게시글일련번호,
+		        게시글유형구분코드,
+		        게시글상태구분코드,
+		        게시글제목,
+		        게시글내용,
+		        게시글삭제여부,
+		        시스템생성자,
+		        시스템수정자,
+		        시스템생성일,
+		        시스템수정일
+		    )
+		VALUES
+		    ( 
+		    #{notePostSno} :: BIGINT, 
+		    #{notePostPtDtcd}, 
+		    #{notePostStatDtcd}, 
+		    #{notePostTit}, 
+		    #{notePostCtt}, 
+		    '0', 
+		    #{sysCreator}, 
+		    #{sysCreator}, 
+		    now(), 
+		    now())
+	</insert>
+	
+	<select id="selectNotePost" parameterType="CustomMap" resultType="CustomMap">
+		SELECT /* Np.selectNotePost */
+		    게시글일련번호 AS NOTE_POST_SNO,
+		    게시글유형구분코드 AS NOTE_POST_PT_DTCD,
+		    게시글상태구분코드 AS NOTE_POST_STAT_DTCD,
+		    게시글제목 AS NOTE_POST_TIT,
+		    게시글내용 AS NOTE_POST_CTT,
+		    게시글삭제여부 AS NOTE_POST_DEL_YN,
+		    시스템생성자 AS SYS_CREATOR,
+		    시스템수정자 AS SYS_MODIFIER,
+		    TO_CHAR(시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT,
+		    TO_CHAR(시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT
+		FROM
+		    DIARY.TB003
+		WHERE
+			1 = 1
+			AND COALESCE(게시글삭제여부, '0') = '0'
+		    AND 게시글일련번호 = #{notePostSno} :: BIGINT
+	</select>
+	<select id="selectNotePostList" parameterType="CustomMap" resultType="CustomMap">
+		SELECT
+			*
+		FROM
+		(
+		SELECT /* Np.selectNotePostList */
+		    게시글일련번호 AS NOTE_POST_SNO,
+		    게시글유형구분코드 AS NOTE_POST_PT_DTCD,
+		    게시글상태구분코드 AS NOTE_POST_STAT_DTCD,
+		    게시글제목 AS NOTE_POST_TIT,
+		    게시글내용 AS NOTE_POST_CTT,
+		    게시글삭제여부 AS NOTE_POST_DEL_YN,
+		    시스템생성자 AS SYS_CREATOR,
+		    시스템수정자 AS SYS_MODIFIER,
+		    TO_CHAR(시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT,
+		    TO_CHAR(시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT,
+		    COUNT(1) OVER() AS COUNT
+		FROM
+		    DIARY.TB003
+		WHERE 1 = 1
+			AND COALESCE(게시글삭제여부, '0') = '0'
+			<if test="notePostSno != null and notePostSno != ''">
+			AND 게시글일련번호 = #{notePostSno} :: BIGINT
+			</if>
+		ORDER BY 게시글일련번호 DESC
+		) A
+		OFFSET (#{pageNum} :: BIGINT - 1) * #{rowAmountPerPage} :: BIGINT
+		LIMIT #{rowAmountPerPage} :: BIGINT
+	</select>
+	
+	<update id="updateNotePost" parameterType="CustomMap">
+		UPDATE DIARY.TB003 /* Np.updateNotePost */
+		SET 시스템수정자 = #{sysModifier}
+		<if test="notePostPtDtcd != null and notePostPtDtcd != ''">
+		, 게시글유형구분코드 = #{notePostPtDtcd}
+		</if>
+		<if test="notePostStatDtcd != null and notePostStatDtcd != ''">
+		, 게시글상태구분코드 = #{notePostStatDtcd}
+		</if>
+		<if test="notePostTit != null and notePostTit != ''">
+		, 게시글제목 = #{notePostTit}
+		</if>
+		<if test="notePostCtt != null and notePostCtt != ''">
+		, 게시글내용 = #{notePostCtt}
+		</if>
+		, 시스템수정일 = now()
+		WHERE 1 = 1
+			AND 게시글일련번호 = #{notePostSno} :: BIGINT
+	</update>
+	
+	<update id="updateNpDelYn" parameterType="CustomMap">
+		UPDATE DIARY.TB003 /* Np.updateNpDelYn */
+		SET 시스템수정자 = #{sysModifier}
+		<if test="notePostDelYn != null and notePostDelYn != ''">
+		, 게시글삭제여부 = #{notePostDelYn}
+		</if>
+		, 시스템수정일 = now()
+		WHERE 1 = 1
+			AND 게시글일련번호 = #{notePostSno} :: BIGINT
+	</update>
+</mapper>

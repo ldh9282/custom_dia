@@ -1,0 +1,199 @@
+/*--------------------------------------------------------------
+# Custom
+--------------------------------------------------------------*/
+/* Start 사이드바 */
+.sidebar-logout {
+	font-size: 14px;
+	color: #212529;
+}
+
+/* End 사이드바 */
+
+/* Start searchResults */
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+#searchResults .selected {
+    background-color: #d3d3d3 !important;
+}
+#searchResults {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.searchResult {
+    display: flex;
+    flex-direction: column;
+}
+.searchResult .domainSno {
+    display: none;
+}
+.searchResult .domainName {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+.searchResult .domainType {
+    color: #6c757d;
+    display: block;
+    margin-bottom: 4px;
+}
+.searchResult .termSno {
+    display: none;
+}
+.searchResult .termName {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 4px;
+}
+.searchResult .termCamelName {
+    color: #6c757d;
+    display: block;
+    margin-bottom: 4px;
+}
+.searchResult .termSnakeName {
+    color: #adb5bd;
+    display: block;
+    margin-bottom: 4px;
+}
+.searchResult .domainType {
+    color: #6c757d;
+    display: block;
+    margin-bottom: 4px;
+}
+.btnSelectColumn {
+    margin-left: auto; /* 버튼을 오른쪽으로 정렬 */
+}
+/* End searchResults */
+
+/* Start topBtn */
+#topBtn {
+    display: none;
+    position: fixed;
+    bottom: 60px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    border-color: #fff;
+    color: #444;
+    font-size: 20px;
+    text-align: center;
+    line-height: 35px;
+    border: none;
+    box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#topBtn:hover {
+    transform: scale(1.1);
+}
+
+#topBtn.show {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+/* Start downBtn */
+#downBtn {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #444;
+    border-color: #444;
+    color: #fff;
+    font-size: 20px;
+    text-align: center;
+    line-height: 35px;
+    border: none;
+    box-shadow: 2px 2px 5px -1px rgba(0, 0, 0, 0.6);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 1000;
+    text-decoration: none;
+}
+
+#downBtn:hover {
+    transform: scale(1.1);
+}
+
+#downBtn.show {
+    display: block;
+    animation: fadeIn 0.5s;
+}
+
+
+/* End downBtn */
+        
+        
+@keyframes fadeIn {
+	from { opacity: 0; }	
+	to { opacity: 1; }	
+}
+
+/* End topBtn */
+
+/* Start bootstrap modal open 시 스크롤 사라짐 및 padding-right 17px 이슈 처리 */
+body {
+	overflow-y: scroll !important; /* 스크롤 유지 */
+	padding-right: 0 !important; /* padding-right 유지 */
+}
+
+header {
+	padding-right: 0 !important;
+}
+/* End bootstrap modal open 시 스크롤 사라짐 및 padding-right 17px 이슈 처리 */
+
+a.title-link, a.title-link:hover {
+	color: inherit;
+	text-decoration: underline;
+}
+@media (max-width: 762px) {
+	html {
+        font-size: 10px;
+    }
+    .btn {
+    	font-size: 10px;
+    }
+}
+
+/* Start 토스트팝업 */
+.toast-popup {
+	box-sizing: border-box;
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+	padding: 1.6rem;
+	font-weight: normal;
+	width: calc(100% - 3.2rem);
+	clip: rect(0 0 0 0);
+	font-size: 1rem;
+	color: #fff;
+	line-height: 1rem;
+	border-radius: 1.8rem;
+	transform: translateX(-50%);
+	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 10000;
+}
+
+.toast-popup.show {
+	bottom: 2.5rem;
+	clip: unset;
+}
+
+/* End 토스트팝업 */

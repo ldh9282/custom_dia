@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Lw">
+	
+	<select id="selectLgwkNotePostSno" parameterType="CustomMap" resultType="String">
+		SELECT /* Lw.selectLgwkNotePostSno */ NEXTVAL('DIARY.TB005_SEQ') AS LGWK_NOTE_POST_SNO
+	</select>
+	
+	<insert id="insertLw">
+		INSERT INTO /* Lw.insertLw */
+		    DIARY.TB005(
+		        장편게시글일련번호,
+		        장편게시글유형구분코드,
+		        장편게시글상태구분코드,
+		        장편게시글제목,
+		        장편게시글설명,
+		        장편게시글삭제여부,
+		        시스템생성자,
+		        시스템수정자,
+		        시스템생성일,
+		        시스템수정일
+		    )
+		VALUES
+		    ( 
+		    #{lgwkNotePostSno} :: BIGINT, 
+		    #{lgwkNotePostPtDtcd}, 
+		    #{lgwkNotePostStatDtcd}, 
+		    #{lgwkNotePostTit}, 
+		    #{lgwkNotePostDesc}, 
+		    '0', 
+		    #{sysCreator}, 
+		    #{sysCreator}, 
+		    now(), 
+		    now())
+	</insert>
+	
+	<select id="selectLw" parameterType="CustomMap" resultType="CustomMap">
+		SELECT /* Lw.selectLw */
+		    장편게시글일련번호 AS LGWK_NOTE_POST_SNO,
+		    장편게시글유형구분코드 AS LGWK_NOTE_POST_PT_DTCD,
+		    장편게시글상태구분코드 AS LGWK_NOTE_POST_STAT_DTCD,
+		    장편게시글제목 AS LGWK_NOTE_POST_TIT,
+		    장편게시글설명 AS LGWK_NOTE_POST_DESC,
+		    장편게시글삭제여부 AS LGWK_NOTE_POST_DEL_YN,
+		    시스템생성자 AS SYS_CREATOR,
+		    시스템수정자 AS SYS_MODIFIER,
+		    TO_CHAR(시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT,
+		    TO_CHAR(시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT
+		FROM
+		    DIARY.TB005
+		WHERE
+			1 = 1
+			AND COALESCE(장편게시글삭제여부, '0') = '0'
+			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+	</select>
+	<select id="selectLwList" parameterType="CustomMap" resultType="CustomMap">
+		SELECT
+			*
+		FROM
+		(
+		SELECT /* Lw.selectLwList */
+		    장편게시글일련번호 AS LGWK_NOTE_POST_SNO,
+		    장편게시글유형구분코드 AS LGWK_NOTE_POST_PT_DTCD,
+		    장편게시글상태구분코드 AS LGWK_NOTE_POST_STAT_DTCD,
+		    장편게시글제목 AS LGWK_NOTE_POST_TIT,
+		    장편게시글설명 AS LGWK_NOTE_POST_DESC,
+		    장편게시글삭제여부 AS LGWK_NOTE_POST_DEL_YN,
+		    시스템생성자 AS SYS_CREATOR,
+		    시스템수정자 AS SYS_MODIFIER,
+		    TO_CHAR(시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT,
+		    TO_CHAR(시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT,
+		    COUNT(1) OVER() AS COUNT
+		FROM
+		    DIARY.TB005
+		WHERE 1 = 1
+			AND COALESCE(장편게시글삭제여부, '0') = '0'
+	    	<if test="lgwkNotePostSno != null and lgwkNotePostSno != ''">
+			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+			</if>
+		ORDER BY 장편게시글일련번호 DESC
+		) A
+		OFFSET (#{pageNum} :: BIGINT - 1) * #{rowAmountPerPage} :: BIGINT
+		LIMIT #{rowAmountPerPage} :: BIGINT
+	</select>
+	
+	<update id="updateLw" parameterType="CustomMap">
+		UPDATE DIARY.TB005 /* Lw.updateLw */
+		SET 시스템수정자 = #{sysModifier}
+		<if test="lgwkNotePostPtDtcd != null and lgwkNotePostPtDtcd != ''">
+		, 장편게시글유형구분코드 = #{lgwkNotePostPtDtcd}
+		</if>
+		<if test="lgwkNotePostStatDtcd != null and lgwkNotePostStatDtcd != ''">
+		, 장편게시글상태구분코드 = #{lgwkNotePostStatDtcd}
+		</if>
+		<if test="lgwkNotePostTit != null and lgwkNotePostTit != ''">
+		, 장편게시글제목 = #{lgwkNotePostTit}
+		</if>
+		<if test="lgwkNotePostDesc != null and lgwkNotePostDesc != ''">
+		, 장편게시글설명 = #{lgwkNotePostDesc}
+		</if>
+		, 시스템수정일 = now()
+		WHERE 1 = 1
+			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+	</update>
+	
+	<update id="updateLwDelYn" parameterType="CustomMap">
+		UPDATE DIARY.TB005 /* Lw.updateLwDelYn */
+		SET 시스템수정자 = #{sysModifier}
+		<if test="lgwkNotePostDelYn != null and lgwkNotePostDelYn != ''">
+		, 장편게시글삭제여부 = #{lgwkNotePostDelYn}
+		</if>
+		, 시스템수정일 = now()
+		WHERE 1 = 1
+			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+	</update>
+	
+	<select id="selectLgwkNotePostDtlSno" parameterType="CustomMap" resultType="String">
+		SELECT /* Lw.selectLgwkNotePostDtlSno */ NEXTVAL('DIARY.TB006_SEQ') AS LGWK_NOTE_POST_DTL_SNO
+	</select>
+	
+	<insert id="insertLwDtl">
+		INSERT INTO /* Lw.insertLwDtl */
+		    DIARY.TB006(
+		        장편게시글일련번호,
+		        장편게시글상세일련번호,
+		        장편게시글상세유형구분코드,
+		        장편게시글상세상태구분코드,
+		        장편게시글상세제목,
+		        장편게시글상세내용,
+		        장편게시글상세삭제여부,
+		        시스템생성자,
+		        시스템수정자,
+		        시스템생성일,
+		        시스템수정일
+		    )
+		VALUES
+		    ( 
+		    #{lgwkNotePostSno} :: BIGINT, 
+		    #{lgwkNotePostDtlSno} :: BIGINT, 
+		    #{lgwkNotePostDtlPtDtcd}, 
+		    #{lgwkNotePostDtlStatDtcd}, 
+		    #{lgwkNotePostDtlTit}, 
+		    #{lgwkNotePostDtlCtt}, 
+		    '0', 
+		    #{sysCreator}, 
+		    #{sysCreator}, 
+		    now(), 
+		    now())
+	</insert>
+	
+	<update id="updateLwDtl" parameterType="CustomMap">
+		UPDATE DIARY.TB006 /* Lw.updateLwDtl */
+		SET 시스템수정자 = #{sysModifier}
+		<if test="lgwkNotePostDtlPtDtcd != null and lgwkNotePostDtlPtDtcd != ''">
+		, 장편게시글상세유형구분코드 = #{lgwkNotePostDtlPtDtcd}
+		</if>
+		<if test="lgwkNotePostDtlStatDtcd != null and lgwkNotePostDtlStatDtcd != ''">
+		, 장편게시글상세상태구분코드 = #{lgwkNotePostDtlStatDtcd}
+		</if>
+		<if test="lgwkNotePostDtlTit != null and lgwkNotePostDtlTit != ''">
+		, 장편게시글상세제목 = #{lgwkNotePostDtlTit}
+		</if>
+		<if test="lgwkNotePostDtlCtt != null and lgwkNotePostDtlCtt != ''">
+		, 장편게시글상세내용 = #{lgwkNotePostDtlCtt}
+		</if>
+		, 시스템수정일 = now()
+		WHERE 1 = 1
+			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+			AND 장편게시글상세일련번호 = #{lgwkNotePostDtlSno} :: BIGINT
+	</update>
+	
+	<update id="updateLwDtlDelYn" parameterType="CustomMap">
+		UPDATE DIARY.TB006 /* Lw.updateLwDtlDelYn */
+		SET 시스템수정자 = #{sysModifier}
+		<if test="lgwkNotePostDtlDelYn != null and lgwkNotePostDtlDelYn != ''">
+		, 장편게시글상세삭제여부 = #{lgwkNotePostDtlDelYn}
+		</if>
+		, 시스템수정일 = now()
+		WHERE 1 = 1
+			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+			AND 장편게시글상세일련번호 = #{lgwkNotePostDtlSno} :: BIGINT
+	</update>
+	
+	<select id="selectLwDtl" parameterType="CustomMap" resultType="CustomMap">
+		SELECT /* Lw.selectLwDtl */
+		    TB005.장편게시글일련번호 AS LGWK_NOTE_POST_SNO,
+		    TB005.장편게시글유형구분코드 AS LGWK_NOTE_POST_PT_DTCD,
+		    TB005.장편게시글상태구분코드 AS LGWK_NOTE_POST_STAT_DTCD,
+		    TB005.장편게시글제목 AS LGWK_NOTE_POST_TIT,
+		    TB005.장편게시글설명 AS LGWK_NOTE_POST_DESC,
+		    TB005.장편게시글삭제여부 AS LGWK_NOTE_POST_DEL_YN,
+		    TB006.장편게시글상세일련번호 AS LGWK_NOTE_POST_DTL_SNO,
+		    TB006.장편게시글상세유형구분코드 AS LGWK_NOTE_POST_DTL_PT_DTCD,
+		    TB006.장편게시글상세상태구분코드 AS LGWK_NOTE_POST_DTL_STAT_DTCD,
+		    TB006.장편게시글상세제목 AS LGWK_NOTE_POST_DTL_TIT,
+		    TB006.장편게시글상세내용 AS LGWK_NOTE_POST_DTL_CTT,
+		    TB006.장편게시글상세삭제여부 AS LGWK_NOTE_POST_DTL_DEL_YN,
+		    TB006.시스템생성자 AS SYS_CREATOR,
+		    TB006.시스템수정자 AS SYS_MODIFIER,
+		    TO_CHAR(TB006.시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT,
+		    TO_CHAR(TB006.시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT
+		FROM
+		    DIARY.TB005 TB005
+		    , DIARY.TB006 TB006
+		WHERE
+			1 = 1
+			AND COALESCE(TB005.장편게시글삭제여부, '0') = '0'
+			AND COALESCE(TB006.장편게시글상세삭제여부, '0') = '0'
+			AND TB005.장편게시글일련번호 = TB006.장편게시글일련번호
+			AND TB006.장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+			AND TB006.장편게시글상세일련번호 = #{lgwkNotePostDtlSno} :: BIGINT
+	</select>
+	<select id="selectLwDtlList" parameterType="CustomMap" resultType="CustomMap">
+		SELECT
+			*
+		FROM
+		(
+		SELECT /* Lw.selectLwDtlList */
+		    TB005.장편게시글일련번호 AS LGWK_NOTE_POST_SNO,
+		    TB005.장편게시글유형구분코드 AS LGWK_NOTE_POST_PT_DTCD,
+		    TB005.장편게시글상태구분코드 AS LGWK_NOTE_POST_STAT_DTCD,
+		    TB005.장편게시글제목 AS LGWK_NOTE_POST_TIT,
+		    TB005.장편게시글설명 AS LGWK_NOTE_POST_DESC,
+		    TB005.장편게시글삭제여부 AS LGWK_NOTE_POST_DEL_YN,
+		    TB006.장편게시글상세일련번호 AS LGWK_NOTE_POST_DTL_SNO,
+		    TB006.장편게시글상세유형구분코드 AS LGWK_NOTE_POST_DTL_PT_DTCD,
+		    TB006.장편게시글상세상태구분코드 AS LGWK_NOTE_POST_DTL_STAT_DTCD,
+		    TB006.장편게시글상세제목 AS LGWK_NOTE_POST_DTL_TIT,
+		    TB006.장편게시글상세내용 AS LGWK_NOTE_POST_DTL_CTT,
+		    TB006.장편게시글상세삭제여부 AS LGWK_NOTE_POST_DTL_DEL_YN,
+		    TB006.시스템생성자 AS SYS_CREATOR,
+		    TB006.시스템수정자 AS SYS_MODIFIER,
+		    TO_CHAR(TB006.시스템생성일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_CREATED_AT,
+		    TO_CHAR(TB006.시스템수정일, 'YYYY-MM-DD HH24:MI:SS') AS SYS_MODIFIED_AT,
+		    COUNT(1) OVER() AS COUNT
+		FROM
+		    DIARY.TB005 TB005
+		    , DIARY.TB006 TB006
+		WHERE
+			1 = 1
+			AND COALESCE(TB005.장편게시글삭제여부, '0') = '0'
+			AND COALESCE(TB006.장편게시글상세삭제여부, '0') = '0'
+			AND TB005.장편게시글일련번호 = TB006.장편게시글일련번호
+			AND TB006.장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+		<choose>
+		<when test="order == '01'">
+		ORDER BY TB006.장편게시글상세일련번호 DESC
+		</when>
+		<when test="order == '02'">
+		ORDER BY TB006.장편게시글상세일련번호 ASC
+		</when>
+		<otherwise>
+		ORDER BY TB006.장편게시글상세일련번호 DESC
+		</otherwise>
+		</choose>
+		) A
+		OFFSET (#{pageNum} :: BIGINT - 1) * #{rowAmountPerPage} :: BIGINT
+		LIMIT #{rowAmountPerPage} :: BIGINT
+	</select>
+</mapper>
