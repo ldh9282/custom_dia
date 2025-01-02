@@ -1,5 +1,6 @@
 package com.custom.dia.cmmn.interceptor;
 
+import java.util.Date;
 import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,8 @@ import org.slf4j.MDC;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.custom.dia.cmmn.utils.DateUtils;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -70,6 +73,7 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 				String requestUrl = (String) request.getAttribute("requestUrl");
 				if (log.isDebugEnabled()) { log.debug(">>> Exception ::: " + e.getMessage()); }
 				if (log.isDebugEnabled()) { log.debug(">>> error request ::: url ::: " + requestUrl); }
+				return false;
 			}
 		}
 		

@@ -3,6 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +65,7 @@
 	            width: '500px',
 	            height: '500px',
 	            initialEditType: 'wysiwyg', // 최초로 보여줄 에디터 타입 (markdown || wysiwyg)
-	            initialValue: '${lwDtl.lgwkNotePostDtlCtt}',
+	            initialValue: '${fn:replace(lwDtl.lgwkNotePostDtlCtt, "'", "\\'")}',
 	            previewStyle: 'tab', // 마크다운 프리뷰 스타일 (tab || vertical)
 	            plugins: []
 	        });
