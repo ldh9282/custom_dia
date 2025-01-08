@@ -20,7 +20,7 @@ public class AeControllor extends CustomController {
 
 	/**
 	 * <pre>
-	 * 메서드명: /DIANP99
+	 * 메서드명: /DIAAE01
 	 * 설명: AES 키 세션세팅
 	 * </pre>
 	 * @param requestMap
