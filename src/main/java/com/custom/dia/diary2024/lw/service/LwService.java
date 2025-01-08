@@ -97,6 +97,8 @@ public class LwService {
 			customMap.put("lgwkNotePostDelYn", "1");
 			customMap.put("sysModifier", StringUtils.NVL(SecurityUtils.getUsername(), "SYSTEM"));
 			lwDao.updateLwDelYn(customMap);
+			customMap.put("lgwkNotePostDtlDelYn", "1");
+			lwDao.updateLwDtlDelYn(customMap);
 		} catch (Exception e) {
 			throw new CustomException(CustomExceptionCode.ERR531, new String[] { "장편게시글삭제여부" }, e);
 		}

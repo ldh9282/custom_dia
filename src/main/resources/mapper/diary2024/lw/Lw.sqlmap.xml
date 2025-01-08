@@ -179,7 +179,9 @@
 		, 시스템수정일 = now()
 		WHERE 1 = 1
 			AND 장편게시글일련번호 = #{lgwkNotePostSno} :: BIGINT
+			<if test="lgwkNotePostDtlSno != null and lgwkNotePostDtlSno != ''">
 			AND 장편게시글상세일련번호 = #{lgwkNotePostDtlSno} :: BIGINT
+			</if>
 	</update>
 	
 	<select id="selectLwDtl" parameterType="CustomMap" resultType="CustomMap">
