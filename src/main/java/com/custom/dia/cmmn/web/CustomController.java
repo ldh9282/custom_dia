@@ -58,9 +58,9 @@ public class CustomController {
 		CustomMap response = new CustomMap();
 		
 		CustomMap header = new CustomMap();
-		header.put("status", "9999");
-		header.put("errorMsg", e.getCustomExceptionCode().getErrorCode());
-		response.put("header", e.getMessage());
+		header.put("status", e.getCustomExceptionCode().getErrorCode());
+		header.put("errorMsg", e.getMessage());
+		response.put("header", header);
 		
 		return response;
 		
