@@ -53,14 +53,14 @@ public class CustomController {
 	 * @param errorMsg
 	 * @return
 	 */
-	public static CustomMap getErrorResponse(String errorMsg) {
+	public static CustomMap getErrorResponse(CustomException e) {
 		
 		CustomMap response = new CustomMap();
 		
 		CustomMap header = new CustomMap();
 		header.put("status", "9999");
-		header.put("errorMsg", errorMsg);
-		response.put("header", header);
+		header.put("errorMsg", e.getCustomExceptionCode().getErrorCode());
+		response.put("header", e.getMessage());
 		
 		return response;
 		
