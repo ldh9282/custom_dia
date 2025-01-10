@@ -1,4 +1,4 @@
-package com.custom.dia.config;
+package com.custom.dia.cmmn.config;
 
 import javax.sql.DataSource;
 

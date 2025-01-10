@@ -1,4 +1,4 @@
-package com.custom.dia.config;
+package com.custom.dia.cmmn.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

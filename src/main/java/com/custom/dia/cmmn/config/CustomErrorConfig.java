@@ -1,4 +1,4 @@
-package com.custom.dia.config;
+package com.custom.dia.cmmn.config;
 
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.context.annotation.Bean;
