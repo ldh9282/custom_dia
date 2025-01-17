@@ -11,10 +11,12 @@
 </head>
 
 <body>
+<%-- 임시 가입방지 Start
 
   <main>
     <div class="container">
-
+	
+	
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
           <div class="row justify-content-center">
@@ -152,6 +154,8 @@
   </script>
 
 	<jsp:include page="/WEB-INF/jsp/include/scriptBody.jsp"></jsp:include>
+
+임시 가입방지 End --%>
 </body>
 
 </html>
