@@ -115,9 +115,7 @@ public class CustomSecurityConfig extends WebSecurityConfigurerAdapter { // spri
 			.permitAll();
 		
 		// rememberMe
-		http.rememberMe()
-			.tokenValiditySeconds(2592000)
-			.rememberMeParameter("remember-me")
+		http
 			.userDetailsService(userDetailsService) // CustomUserDetailsService
 			;
 //			.tokenRepository(persistentTokenRepository());
